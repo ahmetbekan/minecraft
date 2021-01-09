@@ -1,0 +1,21 @@
+apiVersion: v1
+appVersion: SeeValues
+description: Minecraft server
+home: https://minecraft.net/
+keywords:
+- game
+- server
+maintainers:
+- email: gtaylor@gc-taylor.com
+  name: gtaylor
+- email: jeff@billimek.com
+  name: billimek
+- email: itzgeoff@gmail.com
+  name: itzg
+name: minecraft
+sources:
+- https://github.com/itzg/minecraft-server-charts
+- https://hub.docker.com/r/itzg/minecraft-server/~/dockerfile/
+- https://github.com/itzg/docker-minecraft-server
+- https://github.com/itzg/docker-minecraft-bedrock-server
+version: 2.1.1
