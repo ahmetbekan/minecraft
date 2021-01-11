@@ -1,23 +1,7 @@
 ## Configure ingress
 ## ref https://kubernetes.io/docs/concepts/services-networking/ingress/
 ##
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/whitelist-source-range: ${minecraft_ip_ranges}
-    # Values can be templated
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  labels: {}
-  path: /
-  hosts:
-  - ${deployment_endpoint}
-  tls: 
-  - secretName: minecraft-tls
-    hosts:
-    - ${deployment_endpoint}
+
 
 # ref: https://hub.docker.com/r/itzg/minecraft-server/
 image: itzg/minecraft-server
@@ -153,14 +137,16 @@ minecraftServer:
   jvmOpts: ""
   # Options like -X that need to proceed general JVM options
   jvmXXOpts: ""
-  serviceAnnotations: {}
-  serviceType: ClusterIP
+  serviceAnnotations: 
+    service.beta.kubernetes.io/load-balancer-source-ranges: ${minecraft_ip_ranges}
+    external-dns.alpha.kubernetes.io/hostname: ${deployment_endpoint}
+  serviceType: LoadBalancer
   ## Set the port used if the serviceType is NodePort
   # nodePort:
   loadBalancerIP:
-  # loadBalancerSourceRanges: []
-  ## Set the externalTrafficPolicy in the Service to either Cluster or Local
-  # externalTrafficPolicy: Cluster
+  loadBalancerSourceRanges:
+  # Set the externalTrafficPolicy in the Service to either Cluster or Local
+  externalTrafficPolicy: Cluster
   externalIPs:
 
   rcon:

@@ -1,6 +1,6 @@
 module "minecraft_deploy" {
   source  = "fuchicorp/chart/helm"
-  deployment_name        = "minecraft-deploy"
+  deployment_name        = "minecraft-server"
   deployment_environment = "minecraft"
   deployment_endpoint    = "minecraft.${var.google_domain_name}"
   deployment_path        = "minecraft"

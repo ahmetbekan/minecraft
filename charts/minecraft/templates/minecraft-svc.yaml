@@ -2,6 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "minecraft.fullname" . }}
+  annotations:
+    {{- range $key, $value := .Values.minecraftServer.serviceAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
   labels:
     app: {{ template "minecraft.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
