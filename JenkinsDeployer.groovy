@@ -140,12 +140,12 @@ def runPipeline() {
             ## credentials            = \"fuchicorp-service-account.json\"
             """.stripIndent()
 
-            writeFile( [file: "common_tools.tfvars", text: "${deployment_tfvars}"] )
+            writeFile( [file: "minecraft.tfvars", text: "${deployment_tfvars}"] )
 
             if (params.debugMode) {
               sh """
                 echo #############################################################
-                cat common_tools.tfvars
+                cat minecraft.tfvars
                 echo #############################################################
               """
             }
@@ -156,13 +156,13 @@ def runPipeline() {
                 ]) {
                     sh """
                       #!/bin/bash
-                      cat \$default_config >> common_tools.tfvars
+                      cat \$default_config >> minecraft.tfvars
                       
                     """
                     if (params.debugMode) {
                       sh """
                         echo #############################################################
-                        cat common_tools.tfvars
+                        cat minecraft.tfvars
                         echo #############################################################
                       """
                     }
@@ -184,8 +184,8 @@ def runPipeline() {
                   sh """#!/bin/bash -e
                     ${params.init_commands}
                     echo 'init script successfully finished'
-                    source set-env.sh common_tools.tfvars
-                    terraform apply --auto-approve -var-file=common_tools.tfvars
+                    source set-env.sh minecraft.tfvars
+                    terraform apply --auto-approve -var-file=minecraft.tfvars
                     """
                 }
 
@@ -196,8 +196,8 @@ def runPipeline() {
                   sh """#!/bin/bash -e
                     ${params.init_commands}
                     echo 'init script successfully finished'
-                    source set-env.sh common_tools.tfvars
-                    terraform plan -var-file=common_tools.tfvars
+                    source set-env.sh minecraft.tfvars
+                    terraform plan -var-file=minecraft.tfvars
                   """
                 }
               }
@@ -213,8 +213,8 @@ def runPipeline() {
                     sh """#!/bin/bash -e
                         ${params.init_commands}
                         echo 'init script successfully finished'
-                        # source set-env.sh common_tools.tfvars
-                        # terraform destroy --auto-approve -var-file=common_tools.tfvars
+                        # source set-env.sh minecraft.tfvars
+                        # terraform destroy --auto-approve -var-file=minecraft.tfvars
                     """
                     currentBuild.result = 'ABORTED'
                     error('Terraform destroy is disabled for now. Please run all destroy from command line.')
