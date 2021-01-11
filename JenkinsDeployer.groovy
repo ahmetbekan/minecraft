@@ -1,5 +1,4 @@
 #!/usr/bin/env groovy
-package com.lib
 import groovy.json.JsonSlurper
 import static groovy.json.JsonOutput.*
 import hudson.FilePath
