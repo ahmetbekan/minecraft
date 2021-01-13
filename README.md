@@ -36,7 +36,7 @@ common_tools_access = [
 ```
 
 
-## Create minecraft-server - Terraform Plan/Apply
+## Create `minecraft-server` - Terraform Plan/Apply
 
 Use the set-env.sh file to be able to set up local environment variables:
 
@@ -49,4 +49,14 @@ We need to plan all changes before applying them:
 For applying all changes we need to run the following command:
 
 `terraform apply  -var-file=$DATAFILE`
+
+
+## Connecting your minecraft-server
+
+You can now connect to your `minecraft-server` by domain name `minecraft.yourdomain.com` or you can connect it by `LoadBalancer` External Ip as shown below
+
+`kubectl get service -n minecraft`
+
+NAME                                   TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)          
+minecraft-server-minecraft-minecraft   LoadBalancer   10.10.10.10   123.123.123.123   25565:32251/TCP  
 
