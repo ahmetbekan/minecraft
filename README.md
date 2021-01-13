@@ -38,9 +38,9 @@ common_tools_access = [
 
 ## Create `minecraft-server` - Terraform Plan/Apply
 
-Use the set-env.sh file to be able to set up local environment variables:
+Use the set-env.sh file to be able to set up local environment variables and backend:
 
-`source set-env.sh miencraft.tfvars`
+`source set-env.sh minecraft.tfvars`
 
 We need to plan all changes before applying them:
 
