@@ -4,75 +4,49 @@
 
 ## Introduction
 
-This chart creates a single Minecraft Pod, plus Services for the Minecraft server and RCON.
+This repo help you create a Minecraft server with single Minecraft Pod, plus Services for the Minecraft server and RCON.
 
 ## Prerequisites
 
+- Kubernetes 1.4+ Follow Link to create GKE Cluster [Terraform-GKE Module](https://github.com/berkayh27/terraform-gke-module)
+- Copy 'cluster-service-account.json' that was created during GKE Cluster creation to 'minecraft' directory.
 - 512 MB of RAM
-- Kubernetes 1.4+ with Beta APIs enabled
+- Install External-DNS to Kubernetes Cluster [External DNS - Helm Chart] (https://github.com/helm/charts/tree/master/stable/external-dns)
 - PV provisioner support in the underlying infrastructure
+- create a 'minecraft' namespace. 'kubectl create namespace minecraft'
 
-## Installing the Chart
+## Create 'minecraft.tfvars' for Minecraft Server
 
-To install the chart with the release name `minecraft`, read the [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) run:
+'''
+google_bucket_name        = ""                              ## your Google Cloud bucket name
+deployment_name           = ""                              ## enter a uniquie deployment name
+google_project_id         = ""                              ## Google Cloud Project ID
+google_domain_name        = ""                              ## Domain name for your minecraft-server (Optional)
+credentials               = "cluster-service-account.json"  ## Make sure you have cluster-service-account.json located in minecraft directory
+deployment_environment    = "minecraft"                     ## Namespace for minecraft-server
 
-```shell
-helm install minecraft \
-  --set minecraftServer.eula=true itzg/minecraft
-```
 
-This command deploys a Minecraft dedicated server with sensible defaults.
+## Please Specify the IP addresses allow to access your minecraft-server
 
-> **Tip**: List all releases using `helm list`
+common_tools_access = [ 
+                        "10.16.0.27/8",         ## Your clusters Private IP
+                        "189.161.28.247/32",    ## Sample IP
+                        "187.190.154.9/32",     ## Sample IP 2
+]
+'''
 
-## Uninstalling the Chart
 
-To uninstall/delete the `minecraft` deployment:
+## Create minecraft-server - Terraform Plan/Apply
 
-```shell
-helm delete minecraft
-```
+Use the set-env.sh file to be able to set up local environment variables:
 
-The command removes all the Kubernetes components associated with the chart and deletes the release.
+'source set-env.sh miencraft.tfvars'
 
-## Configuration
+We need to plan all changes before applying them:
 
-Refer to [values.yaml](values.yaml) for the full run-down on defaults. These are a mixture of Kubernetes and Minecraft-related directives that map to environment variables in the [itzg/minecraft-server](https://hub.docker.com/r/itzg/minecraft-server/) Docker image.
+'terraform plan -var-file=$DATAFILE ## Displays what would be executed'
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+For applying all changes we need to run the following command:
 
-```shell
-helm install --name minecraft \
-  --set minecraftServer.eula=true,minecraftServer.Difficulty=hard \
-  itzg/minecraft
-```
+'terraform apply  -var-file=$DATAFILE'
 
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
-
-```shell
-helm install --name minecraft -f values.yaml itzg/minecraft
-```
-
-> **Tip**: You can use the default [values.yaml](values.yaml)
-
-## Persistence
-
-The [itzg/minecraft-server](https://hub.docker.com/r/itzg/minecraft-server/) image stores the saved games and mods under /data.
-
-When [persistence.dataDir.enabled in values.yaml](https://github.com/itzg/minecraft-server-charts/blob/master/charts/minecraft/values.yaml#L171) is set to true PersistentVolumeClaim is created and mounted for saves but not mods. In order to enable this functionality
-you can change the values.yaml to enable persistence under the sub-sections under `persistence`.
-
-> *"An emptyDir volume is first created when a Pod is assigned to a Node, and exists as long as that Pod is running on that node. When a Pod is removed from a node for any reason, the data in the emptyDir is deleted forever."*
-
-## Backups
-
-You can backup the state of your minecraft server to your local machine via the `kubectl cp` command.  
-
-```shell
-NAMESPACE=default
-POD_ID=lionhope-387ff8d-sdis9
-kubectl exec --namespace ${NAMESPACE} ${POD_ID} rcon-cli save-off
-kubectl exec --namespace ${NAMESPACE} ${POD_ID} rcon-cli save-all
-kubectl cp ${NAMESPACE}/${POD_ID}:/data .
-kubectl exec --namespace ${NAMESPACE} ${POD_ID} rcon-cli save-on
-```
