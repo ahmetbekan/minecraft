@@ -11,7 +11,7 @@ This repo help you create a Minecraft server with single Minecraft Pod, plus Ser
 - Kubernetes 1.4+ Follow Link to create GKE Cluster [Terraform-GKE Module](https://github.com/berkayh27/terraform-gke-module)
 - Copy `cluster-service-account.json` that was created during GKE Cluster creation to `minecraft` directory.
 - 512 MB of RAM
-- Install External-DNS to Kubernetes Cluster [External DNS - Helm Chart] (https://github.com/helm/charts/tree/master/stable/external-dns)
+- Install External-DNS to Kubernetes Cluster [External DNS - Helm Chart](https://github.com/helm/charts/tree/master/stable/external-dns)
 - PV provisioner support in the underlying infrastructure
 - create a `minecraft` namespace. `kubectl create namespace minecraft`
 
