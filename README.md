@@ -15,7 +15,7 @@ This repo help you create a Minecraft server with single Minecraft Pod, plus Ser
 - PV provisioner support in the underlying infrastructure
 - create a `minecraft` namespace. `kubectl create namespace minecraft`
 
-## Create 'minecraft.tfvars' for Minecraft Server
+## Create `minecraft.tfvars` for Minecraft Server
 
 ```
 google_bucket_name        = ""                              ## your Google Cloud bucket name
