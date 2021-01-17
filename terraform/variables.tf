@@ -1,5 +1,6 @@
 variable "namespaces" {
   type = "list"
+
   default = [
     "dev-students",
     "qa-students",
@@ -9,8 +10,9 @@ variable "namespaces" {
     "prod",
     "test",
     "stage",
-    "elk"
+    "elk",
   ]
+
   description = "- (Required) list of all namespaces for fuchicorp cluster"
 }
 
@@ -23,7 +25,7 @@ variable "google_bucket_name" {
 }
 
 variable "google_domain_name" {
-  default = "fuchicorp.com"
+  default     = "fuchicorp.com"
   description = "Please change to your domain name"
 }
 
@@ -33,17 +35,17 @@ variable "google_project_id" {
 
 variable "common_tools_access" {
   type = "list"
+
   default = [
-        "10.40.0.13/8",      ## Cluster access
-        "193.36.224.68/32",  ## Mexico IP 
+    "10.40.0.13/8",     ## Cluster access
+    "193.36.224.68/32", ## Mexico IP
   ]
 }
 
 variable "deployment_environment" {
-  default = "tools"
+  default     = "tools"
   description = "Namespace of the deployment <It will be created>"
 }
-
 
 variable "credentials" {
   default = "common-service-account.json"
